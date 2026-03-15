@@ -13,6 +13,7 @@ https://github.com/dimavarlamov/AutoSales
 ## Чек-лист тестирования
 
 Чек-лист тестирования проекта AutoSales был составлен в Miro:
+
 https://miro.com/app/board/uXjVGyszsQM=/?share_link_id=649083494972
 
 ## Что содержит данный репозиторий
