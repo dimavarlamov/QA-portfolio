@@ -10,6 +10,11 @@ AutoSales — веб-приложение автосалона, разработ
 Исходный код приложения:  
 https://github.com/dimavarlamov/AutoSales
 
+## Чек-лист тестирования
+
+Чек-лист тестирования проекта AutoSales был составлен в Miro:
+https://miro.com/app/board/uXjVGyszsQM=/?share_link_id=649083494972
+
 ## Что содержит данный репозиторий
 
 - чек-лист тестирования
@@ -28,3 +33,4 @@ postman — коллекция API-тестов
 charles — файлы перехвата HTTP-запросов  
 cypress — UI-автотесты  
 reports — отчёты тестирования
+
