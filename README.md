@@ -32,6 +32,15 @@ test-cases — тест-кейсы
 bug-reports — баг-репорты  
 postman — коллекция API-тестов  
 charles — файлы перехвата HTTP-запросов  
-cypress — UI-автотесты  
+cypress-autotests — UI-автотесты  
 reports — отчёты тестирования
 
+## UI автотесты (Cypress)
+
+Автотесты находятся в папке [cypress-autotests](./cypress-autotests).
+
+Для запуска:
+1. Установите Node.js
+2. Перейдите в папку `cypress-autotests`
+3. Выполните `npm install`
+4. Запустите `npx cypress open`
