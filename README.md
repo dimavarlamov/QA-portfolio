@@ -88,3 +88,27 @@ reports — отчёты тестирования
 Все автотесты успешно проходят ✅
 
 <img src="https://github.com/user-attachments/assets/d594cdd7-a040-4e91-be65-0c37ae10dad4" width="500" />
+
+## API-тестирование (Postman)
+
+Коллекция Postman покрывает основные публичные эндпоинты, авторизацию и базовые проверки безопасности.
+
+**Файлы:**
+- [`postman/autosales-api-tests.postman_collection.json`](./postman/autosales-api-tests.postman_collection.json) — коллекция тестов
+- [`postman/autosales-local.postman_environment.json`](./postman/autosales-local.postman_environment.json) — окружение для локального запуска
+
+**Что проверяется:**
+- Каталог автомобилей (GET /products)
+- Поиск по марке/модели (GET /products?search=...)
+- Обработка несуществующего автомобиля (редирект на логин)
+- Авторизация (POST /auth/login)
+- Доступ к панели администратора без прав
+- Безопасность: SQL injection через поиск
+- Безопасность: отсутствие CSRF-защиты при обновлении профиля
+
+### Результат выполнения
+
+Все тесты проходят успешно ✅
+
+<img src="https://github.com/dimavarlamov/QA-portfolio/blob/main/assets/postman-run-results-1.png?raw=true" width="500" />
+<img src="https://github.com/dimavarlamov/QA-portfolio/blob/main/assets/postman-run-results-2.png?raw=true" width="500" />
