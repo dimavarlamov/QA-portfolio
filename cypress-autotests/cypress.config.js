@@ -2,8 +2,13 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:8080', 
-    supportFile: 'cypress/support/e2e.js',
+    baseUrl: 'http://localhost:8080',
     specPattern: 'cypress/e2e/**/*.cy.js',
+    supportFile: 'cypress/support/e2e.js',
+
+    env: {
+      AUTH_EMAIL: 'demavarlamov@gmail.com',
+      AUTH_PASSWORD: 'qwerty123'
+    }
   },
 });
