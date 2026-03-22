@@ -87,4 +87,4 @@ reports — отчёты тестирования
 
 Все автотесты успешно проходят ✅
 
-<img width="945" height="504" alt="image" src="https://github.com/user-attachments/assets/d594cdd7-a040-4e91-be65-0c37ae10dad4" />
+<img width="945" height="504" alt="image" src="https://github.com/user-attachments/assets/d594cdd7-a040-4e91-be65-0c37ae10dad4" width="500" />
