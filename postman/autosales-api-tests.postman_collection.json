@@ -1,1 +1,352 @@
-
+{
+  "info": {
+    "_postman_id": "7b6a0d4e-5c64-4a4c-9d6e-8f44a9b4a1f2",
+    "name": "AutoSales API Tests",
+    "description": "Коллекция API-тестов для проекта AutoSales. Покрывает основные эндпоинты, авторизацию и базовые security-checks.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Public API",
+      "item": [
+        {
+          "name": "GET /products — получить список автомобилей",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Статус 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Страница каталога загружена (нет ошибки 404/Not Found)', function () {",
+                  "    const body = pm.response.text();",
+                  "    pm.expect(body).to.not.match(/404|Not Found/);",
+                  "    pm.expect(body.length).to.be.greaterThan(100);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /product/{{missingProductId}} — несуществующий автомобиль",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/product/{{missingProductId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["product", "{{missingProductId}}"]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Несуществующий товар перенаправляет на логин или показывает ошибку', function () {",
+                  "    const body = pm.response.text();",
+                  "    const status = pm.response.code;",
+                  "    const isLoginPage = body.includes('Добро пожаловать') && body.includes('/auth/login');",
+                  "    const isErrorPage = body.match(/Whitelabel|404|Not Found/i);",
+                  "    const isRedirect = status === 302 && pm.response.headers.get('Location')?.includes('/auth/login');",
+                  "    ",
+                  "    pm.expect(isLoginPage || isErrorPage || isRedirect).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products?search={{searchQuery}} — поиск по марке/модели",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?search={{searchQuery}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "{{searchQuery}}"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Статус 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Результаты поиска отображаются', function () {",
+                  "    const body = pm.response.text();",
+                  "    pm.expect(body.length).to.be.greaterThan(0);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products?search={{invalidSearchQuery}} — невалидный поиск (SQL injection)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?search={{invalidSearchQuery}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "{{invalidSearchQuery}}"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Статус 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Сервер не падает на невалидном поиске', function () {",
+                  "    const body = pm.response.text();",
+                  "    pm.expect(body).to.not.be.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Auth & Security",
+      "item": [
+        {
+          "name": "POST /auth/login — вход в систему",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "{{loginEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{loginPassword}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Вход обработан без серверной ошибки', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 302, 303]);",
+                  "});",
+                  "",
+                  "pm.test('После входа сервер возвращает редирект или успешный статус', function () {",
+                  "    const location = pm.response.headers.get('Location');",
+                  "    const isRedirect = location && (location.includes('/catalog') || location.includes('/'));",
+                  "    const isOk = pm.response.code === 200;",
+                  "    pm.expect(isRedirect || isOk).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /admin/dashboard — доступ без прав",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard"]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Доступ запрещён или выполнен редирект на login', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([401, 403, 302]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /profile/update — запрос без CSRF-токена",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "firstName",
+                  "value": "QA",
+                  "type": "text"
+                },
+                {
+                  "key": "lastName",
+                  "value": "AutoSales",
+                  "type": "text"
+                },
+                {
+                  "key": "patronymic",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "passportSeries",
+                  "value": "1234",
+                  "type": "text"
+                },
+                {
+                  "key": "passportNumber",
+                  "value": "123456",
+                  "type": "text"
+                },
+                {
+                  "key": "address",
+                  "value": "Test address",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+7 999 123 45 67",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profile/update",
+              "host": ["{{baseUrl}}"],
+              "path": ["profile", "update"]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Запрос обработан (CSRF-защита отсутствует) — уязвимость', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 302]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /logout — завершение сессии",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["logout"]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Logout выполнен или запрос отклонён из-за CSRF', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 302, 303, 403]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "missingProductId",
+      "value": "999999"
+    },
+    {
+      "key": "searchQuery",
+      "value": "Lexus"
+    },
+    {
+      "key": "invalidSearchQuery",
+      "value": "' OR '1'='1"
+    },
+    {
+      "key": "loginEmail",
+      "value": ""
+    },
+    {
+      "key": "loginPassword",
+      "value": ""
+    }
+  ]
+}
