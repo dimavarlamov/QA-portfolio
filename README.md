@@ -35,42 +35,8 @@ charles — файлы перехвата HTTP-запросов
 cypress-autotests — UI-автотесты  
 reports — отчёты тестирования
 
-# QA Portfolio
-
-Портфолио по тестированию веб-приложения AutoSales.  
-В репозитории представлены артефакты тестирования: чек-лист, тест-кейсы, баг-репорты, API-тестирование (Postman), анализ HTTP-запросов (Charles) и UI-автотесты на Cypress.
-
-## О тестируемом приложении
-
-AutoSales — веб-приложение автосалона, разработанное мной в учебных целях.  
-
-Исходный код приложения:  
-https://github.com/dimavarlamov/AutoSales
-
-## Чек-лист тестирования
-
-Чек-лист тестирования проекта AutoSales был составлен в Miro:
-
-https://miro.com/app/board/uXjVGyszsQM=/?share_link_id=649083494972
-
-## Что содержит данный репозиторий
-
-- чек-лист тестирования
-- тест-кейсы
-- баг-репорты
-- API-тестирование (Postman)
-- анализ HTTP-запросов (Charles)
-- UI-автотесты (Cypress)
-
-## Структура репозитория
-
-checklists — чек-лист тестирования  
-test-cases — тест-кейсы  
-bug-reports — баг-репорты  
-postman — коллекция API-тестов  
-charles — файлы перехвата HTTP-запросов  
-cypress-autotests — UI-автотесты  
-reports — отчёты тестирования
+## Test-cases
+Все тест-кейсы находятся в Google Sheets: https://docs.google.com/spreadsheets/d/1_Q-iFsHLe2fUODI-cjJ7lFffanbjUk9SKvfGxk74fnY/edit?usp=sharing
 
 ## UI автотесты (Cypress)
 
