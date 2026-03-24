@@ -78,3 +78,6 @@ reports — отчёты тестирования
 
 <img src="https://github.com/dimavarlamov/QA-portfolio/blob/main/assets/postman-run-results-1.png?raw=true" width="500" />
 <img src="https://github.com/dimavarlamov/QA-portfolio/blob/main/assets/postman-run-results-2.png?raw=true" width="500" />
+
+## Bug-reports
+Все bug-reports находятся в Google Sheets: https://docs.google.com/spreadsheets/d/1w1QIGRNknaOCof8CeeaMzweX_6It6n9vjTbJq2j38bw/edit?usp=sharing
