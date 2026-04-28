@@ -1,0 +1,22 @@
+# Compiled files
+target/
+*.class
+
+# IDE
+.idea/
+*.iml
+.settings/
+.project
+.classpath
+
+# Logs
+*.log
+
+# Selenium drivers
+chromedriver.exe
+geckodriver.exe
+webdriver_cache/
+
+# OS files
+.DS_Store
+Thumbs.db
