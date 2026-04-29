@@ -37,7 +37,6 @@ public class FavoritesPage extends BasePage {
         return driver.findElements(favoriteCards).size();
     }
 
-    // ИСПРАВЛЕННЫЙ метод - добавляем ожидание редиректа после клика
     public void toggleFirstFavorite() {
         List<WebElement> buttons = driver.findElements(favoriteButtons);
         if (buttons.isEmpty()) {
@@ -45,7 +44,6 @@ public class FavoritesPage extends BasePage {
         }
         WebElement button = buttons.get(0);
         wait.until(ExpectedConditions.elementToBeClickable(button)).click();
-        // После клика происходит POST /favorites/toggle и редирект обратно на каталог
         wait.until(ExpectedConditions.urlContains("/catalog"));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".product-grid")));
     }
@@ -56,10 +54,7 @@ public class FavoritesPage extends BasePage {
             throw new IllegalStateException("На странице нет активных избранных автомобилей");
         }
         wait.until(ExpectedConditions.elementToBeClickable(buttons.get(0))).click();
-        // После удаления также редирект на каталог? Нет, removeFirstFavorite вызывается на странице избранного,
-        // и после клика редирект остаётся на избранном (Referer = /favorites). Здесь ожидание можно не добавлять,
-        // потому что страница избранного перезагрузится.
-        // Но для надёжности подождём, пока элемент избранного исчезнет? Не будем усложнять.
+        try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
     }
 
     public boolean isEmptyMessageDisplayed() {

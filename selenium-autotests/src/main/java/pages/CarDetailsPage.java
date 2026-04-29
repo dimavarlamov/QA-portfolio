@@ -2,13 +2,16 @@ package pages;
 
 import common.Config;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.base.BasePage;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.List;
 
@@ -37,6 +40,9 @@ public class CarDetailsPage extends BasePage {
     @FindBy(css = ".car-info .btn.btn-success")
     private WebElement buyButton;
 
+    @FindBy(css = ".car-info")
+    private WebElement carInfoBlock;
+
     public CarDetailsPage(WebDriver driver) {
         super(driver);
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -47,11 +53,16 @@ public class CarDetailsPage extends BasePage {
             throw new IllegalArgumentException("carId cannot be null");
         }
         open(Config.BASE_URL + "/cars/" + carId);
+        waitForPageFullyLoaded();
+        return this;
+    }
+
+    public void waitForPageFullyLoaded() {
         wait.until(ExpectedConditions.or(
                 ExpectedConditions.visibilityOf(carTitle),
                 ExpectedConditions.visibilityOf(mainCarImage)
         ));
-        return this;
+        wait.until(ExpectedConditions.visibilityOf(carInfoBlock));
     }
 
     public boolean isOpened() {
@@ -83,7 +94,8 @@ public class CarDetailsPage extends BasePage {
             if (text.isEmpty()) continue;
             if (text.equals(getCarTitleText())) continue;
             if (text.equals(getPriceText())) continue;
-            if (text.startsWith("В наличии") || text.startsWith("Нет в наличии") || text.startsWith("Ожидается")) continue;
+            if (text.startsWith("В наличии") || text.startsWith("Нет в наличии") || text.startsWith("Ожидается"))
+                continue;
             if (text.startsWith("Страна производитель")) continue;
             return text;
         }
@@ -99,14 +111,34 @@ public class CarDetailsPage extends BasePage {
     }
 
     public boolean isAddToFavoritesButtonDisplayed() {
-        return !driver.findElements(By.cssSelector("button.favorite-btn-large")).isEmpty()
-                && addToFavoritesButton.isDisplayed();
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button.favorite-btn-large")));
+                        return (Boolean) ((JavascriptExecutor) driver).executeScript(
+                    "return arguments[0].offsetParent !== null && arguments[0].getBoundingClientRect().height > 0;",
+                    addToFavoritesButton
+            );
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean isBuyButtonDisplayed() {
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".car-info .btn.btn-success")));
+            return (Boolean) ((JavascriptExecutor) driver).executeScript(
+                    "return arguments[0].offsetParent !== null && arguments[0].getBoundingClientRect().height > 0;",
+                    buyButton
+            );
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public CarDetailsPage clickAddToFavorites() {
         wait.until(ExpectedConditions.elementToBeClickable(addToFavoritesButton)).click();
-     
-        wait.until(ExpectedConditions.visibilityOf(carTitle));
+        wait.until(ExpectedConditions.urlContains("/cars/"));
+        PageFactory.initElements(driver, this);
+        waitForPageFullyLoaded();
         return this;
     }
 
@@ -115,19 +147,45 @@ public class CarDetailsPage extends BasePage {
                 && favoriteToggleButton.isDisplayed();
     }
 
-    // Аналогично для toggle
     public CarDetailsPage clickFavoriteToggle() {
         wait.until(ExpectedConditions.elementToBeClickable(favoriteToggleButton)).click();
-        wait.until(ExpectedConditions.visibilityOf(carTitle));
+        wait.until(ExpectedConditions.urlContains("/cars/"));
+        PageFactory.initElements(driver, this);
+        waitForPageFullyLoaded();
         return this;
-    }
-
-    public boolean isBuyButtonDisplayed() {
-        return !driver.findElements(By.cssSelector(".car-info .btn.btn-success")).isEmpty()
-                && buyButton.isDisplayed();
     }
 
     public void clickBuyButton() {
         wait.until(ExpectedConditions.elementToBeClickable(buyButton)).click();
+    }
+
+    public BigDecimal getCarPrice() {
+        String priceText = getPriceText().replace("₽", "").replace(" ", "").trim();
+        return new BigDecimal(priceText);
+    }
+
+    public String getBodyType() {
+        try {
+            WebElement el = driver.findElement(By.xpath("//div[@class='specs']//p[strong[contains(text(),'Тип кузова')]]/span"));
+            return el.getText().trim().toLowerCase();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public String getColor() {
+        try {
+            List<WebElement> els = driver.findElements(By.xpath("//div[@class='specs']//p[strong[contains(text(),'Цвет')]]/span"));
+            if (!els.isEmpty()) return els.get(0).getText().trim().toLowerCase();
+        } catch (Exception ignored) {}
+        return "";
+    }
+
+    public String getAirConditioning() {
+        try {
+            List<WebElement> els = driver.findElements(By.xpath("//div[@class='specs']//p[strong[contains(text(),'Кондиционер')]]/span"));
+            if (!els.isEmpty()) return els.get(0).getText().trim().toLowerCase();
+        } catch (Exception ignored) {}
+        return "";
     }
 }

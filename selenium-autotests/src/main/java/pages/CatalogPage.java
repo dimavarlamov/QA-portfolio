@@ -171,7 +171,6 @@ public class CatalogPage extends BasePage {
         wait.until(ExpectedConditions.visibilityOf(minPriceInput));
         minPriceInput.clear();
         minPriceInput.sendKeys(minPrice.toPlainString());
-
         maxPriceInput.clear();
         maxPriceInput.sendKeys(maxPrice.toPlainString());
         return this;
@@ -217,11 +216,9 @@ public class CatalogPage extends BasePage {
     }
 
     public CatalogPage applyFilters() {
-        // Просто нажимаем кнопку обычным способом без лишних скроллов
         try {
             applyFiltersButton.click();
         } catch (Exception e) {
-            // Если обычный клик не сработал, пробуем JavaScript
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", applyFiltersButton);
         }
         waitForResultsToLoad();
@@ -231,9 +228,7 @@ public class CatalogPage extends BasePage {
     public CatalogPage resetFilters() {
         openFilters();
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", resetButton);
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException ignored) {}
+        try { Thread.sleep(500); } catch (InterruptedException ignored) {}
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", resetButton);
         wait.until(ExpectedConditions.urlToBe(Config.BASE_URL + "/catalog"));
         wait.until(ExpectedConditions.visibilityOf(productGrid));
@@ -258,7 +253,19 @@ public class CatalogPage extends BasePage {
                     ExpectedConditions.visibilityOf(productGrid),
                     ExpectedConditions.presenceOfElementLocated(By.cssSelector(".no-products"))
             ));
-        } catch (TimeoutException ignored) {
-        }
+        } catch (TimeoutException ignored) {}
+    }
+
+    public List<BigDecimal> getProductPrices() {
+        return driver.findElements(By.cssSelector(".product-card .price"))
+                .stream()
+                .map(el -> new BigDecimal(el.getText().replace("₽", "").trim()))
+                .collect(Collectors.toList());
+    }
+
+    public CarDetailsPage clickFirstCar() {
+        WebElement firstCarLink = driver.findElement(By.cssSelector(".product-card a"));
+        firstCarLink.click();
+        return new CarDetailsPage(driver);
     }
 }
