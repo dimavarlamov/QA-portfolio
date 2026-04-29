@@ -2,7 +2,7 @@
 
 Автотесты проверяют ключевую функциональность веб-приложения AutoSales.
 
-📁 Папка: [selenium-autotests](./selenium-autotests/)
+📁 Папка: [selenium-autotests](https://github.com/dimavarlamov/QA-portfolio/tree/main/selenium-autotests)
 
 ### Что покрыто автотестами
 
