@@ -1,7 +1,7 @@
 # QA Portfolio
 
 Портфолио по тестированию веб-приложения AutoSales.  
-В репозитории представлены артефакты тестирования: чек-лист, тест-кейсы, баг-репорты, API-тестирование (Postman), анализ HTTP-запросов (Charles) и UI-автотесты на Cypress.
+В репозитории представлены артефакты тестирования: чек-лист, тест-кейсы, баг-репорты, API-тестирование (Postman), анализ HTTP-запросов (Charles) и UI-автотесты на Selenium и Cypress.
 
 ## О тестируемом приложении
 
@@ -31,13 +31,14 @@ https://miro.com/app/board/uXjVGyszsQM=/?share_link_id=676938521386
 checklists — чек-лист тестирования  
 test-cases — тест-кейсы   
 bug-reports — баг-репорты  
-selenium-autosales - UI автотесты (Selenium + Java)   
+selenium-autotests - UI автотесты (Selenium + Java)   
 postman — коллекция API-тестов  
 charles — файлы перехвата HTTP-запросов  
 cypress-autotests — UI-автотесты  
 
 ## Test-cases
 Все тест-кейсы находятся в Google Sheets: https://docs.google.com/spreadsheets/d/1_Q-iFsHLe2fUODI-cjJ7lFffanbjUk9SKvfGxk74fnY/edit?usp=sharing
+
 
 ## UI автотесты (Selenium + Java)
 
