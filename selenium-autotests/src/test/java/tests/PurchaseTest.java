@@ -16,9 +16,9 @@ import java.time.Duration;
 
 public class PurchaseTest extends AuthenticatedBaseTest {
 
-    private static final Integer CAR_IN_STOCK_ID = 102; // LADA Vesta, stock=3, цена 1 350 000
+    private static final Integer CAR_IN_STOCK_ID = 102;
     private static final String CAR_IN_STOCK_NAME = "LADA Vesta";
-    private static final Integer CAR_OUT_OF_STOCK_ID = 118; // Lexus LS460, stock=0
+    private static final Integer CAR_OUT_OF_STOCK_ID = 118;
 
     @Test(description = "Покупка автомобиля, который есть в наличии")
     public void purchaseCarInStockTest() {

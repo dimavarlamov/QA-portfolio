@@ -58,7 +58,6 @@ public class CarDetailsTest extends AuthenticatedBaseTest {
 //
 //        boolean favoritesButtonVisible = page.isAddToFavoritesButtonDisplayed();
 //        if (!favoritesButtonVisible) {
-//            // Если не видна, пробуем перезагрузить страницу (иногда помогает)
 //            driver.navigate().refresh();
 //            try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
 //            favoritesButtonVisible = page.isAddToFavoritesButtonDisplayed();
