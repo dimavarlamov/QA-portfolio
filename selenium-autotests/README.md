@@ -2,7 +2,7 @@
 
 Автотесты проверяют ключевую функциональность веб-приложения AutoSales.
 
-📁 Папка: [selenium-autotests](./selenium-autotests)
+📁 Папка: [selenium-autotests](./selenium-autotests/)
 
 ### Что покрыто автотестами
 
@@ -62,5 +62,6 @@
 
 ### Запуск тестов
 
-cd selenium-autotests
+cd selenium-autotests  
+
 mvn clean test
