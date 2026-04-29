@@ -21,6 +21,7 @@ https://miro.com/app/board/uXjVGyszsQM=/?share_link_id=676938521386
 - чек-лист тестирования
 - тест-кейсы
 - баг-репорты
+- UI автотесты (Selenium + Java)
 - API-тестирование (Postman)
 - анализ HTTP-запросов (Charles)
 - UI-автотесты (Cypress)
@@ -28,15 +29,44 @@ https://miro.com/app/board/uXjVGyszsQM=/?share_link_id=676938521386
 ## Структура репозитория
 
 checklists — чек-лист тестирования  
-test-cases — тест-кейсы  
+test-cases — тест-кейсы   
 bug-reports — баг-репорты  
+selenium-autosales - UI автотесты (Selenium + Java)   
 postman — коллекция API-тестов  
 charles — файлы перехвата HTTP-запросов  
 cypress-autotests — UI-автотесты  
-reports — отчёты тестирования
 
 ## Test-cases
 Все тест-кейсы находятся в Google Sheets: https://docs.google.com/spreadsheets/d/1_Q-iFsHLe2fUODI-cjJ7lFffanbjUk9SKvfGxk74fnY/edit?usp=sharing
+
+## UI автотесты (Selenium + Java)
+
+Автотесты проверяют ключевую функциональность веб-приложения AutoSales.
+
+📁 Папка: [selenium-autotests](https://github.com/dimavarlamov/QA-portfolio/tree/main/selenium-autotests)
+
+### Что покрыто автотестами
+
+- **Регистрация** – валидные/невалидные данные, дубликат email
+- **Авторизация** – успешный вход, неверный пароль, выход
+- **Каталог** – поиск, сброс фильтров, фильтрация по цене, марке, стране, рулю, типу двигателя, кузову, цвету, кондиционеру, XSS-безопасность
+- **Карточка автомобиля** – проверка данных, добавление/удаление из избранного
+- **Избранное** – добавление, удаление, защита от дублей (быстрые клики)
+- **Покупка** – успешная покупка, появление заказа в «Моих покупках»
+- **Безопасность** – недоступность админ-панели для обычного пользователя
+
+### Запуск тестов
+
+cd selenium-autotests  
+
+mvn clean test
+
+### Результат выполнения
+
+Все автотесты успешно проходят ✅
+
+<img width="937" height="386" alt="Прогон всех автотестов Selenium" src="https://github.com/user-attachments/assets/d786e8a3-c560-41d4-9381-4c3a8da1655f" width="500" />
+
 
 ## UI автотесты (Cypress)
 
